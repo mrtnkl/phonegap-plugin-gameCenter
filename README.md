@@ -38,6 +38,6 @@ Using this plugin requires [Cordova iOS](https://github.com/apache/incubator-cor
     var ACHIEVEMENT_ID = 'star'
     gamecenter.getAchievement(ACHIEVEMENT_ID);
 
-// Show achievements by modal view 
-gamecenter.showAchievements();
+    // Show achievements by modal view 
+    gamecenter.showAchievements();
 
