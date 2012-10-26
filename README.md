@@ -21,23 +21,23 @@ Using this plugin requires [Cordova iOS](https://github.com/apache/incubator-cor
 
 ## JAVASCRIPT INTERFACE ##
 
-// After device ready, create a local alias
-var gamecenter = window.plugins.gamcenter
+    // After device ready, create a local alias
+    var gamecenter = window.plugins.gamcenter
+    
+    // Use Leaderboard ID added to iTunes Connect.
+    var LEADERBOARD_ID = "1"
+    
+    // Report integer score to Leaderboard
+    var score = 100
+    gamecenter.reportScore(LEADERBOARD_ID, score);
 
-// Use Leaderboard ID added to iTunes Connect.
-var LEADERBOARD_ID = "1"
+    // Show leaderboard by modal view
+    gamecenter.showLeaderboard(LEADERBOARD_ID);
 
-// Report integer score to Leaderboard
-var score = 100
-gamecenter.reportScore(LEADERBOARD_ID, score);
+    // Unlock achivement
+    var ACHIEVEMENT_ID = 'star'
+    gamecenter.getAchievement(ACHIEVEMENT_ID);
 
-// Show leaderboard by modal view
-gamecenter.showLeaderboard(LEADERBOARD_ID);
-
-// Unlock achivement
-var ACHIEVEMENT_ID = 'star'
-gamecenter.getAchievement(ACHIEVEMENT_ID);
-
-// Show achievements by modal view
+// Show achievements by modal view 
 gamecenter.showAchievements();
 
