@@ -8,16 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-#ifdef CORDOVA_FRAMEWORK
 #import <Cordova/CDVPlugin.h>
-#else
-#import "CDVPlugin.h"
-#endif
-
 #import <GameKit/GameKit.h>
 
 @interface GameCenterPlugin : CDVPlugin <GKLeaderboardViewControllerDelegate,GKAchievementViewControllerDelegate> {
-
 }
 
 - (void)authenticateLocalPlayer:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options;

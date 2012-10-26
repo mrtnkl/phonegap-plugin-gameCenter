@@ -7,11 +7,7 @@
 //
 
 #import "GameCenterPlugin.h"
-#ifdef CORDOVA_FRAMEWORK
 #import <Cordova/CDVViewController.h>
-#else
-#import "CDVViewController.h"
-#endif
 
 @implementation GameCenterPlugin
 
@@ -41,7 +37,7 @@
     scoreReporter.value = score;
 	
     [scoreReporter reportScoreWithCompletionHandler:^(NSError *error) {
-		if (error != nil)
+		if (!error)
 		{
 			NSString* jsCallback = [NSString stringWithFormat:@"GameCenter._userDidSubmitScore();",@""];
 			[self.webView stringByEvaluatingJavaScriptFromString:jsCallback];
