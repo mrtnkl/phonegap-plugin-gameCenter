@@ -39,6 +39,8 @@
     alert('score error');
   };
 
-  if(!window.plugins) window.plugins = {};
-  window.plugins.gamecenter = new GameCenter();
+  cordova.addConstructor(function() {
+    if(!window.plugins) window.plugins = {};
+    window.plugins.gamecenter = new GameCenter();
+  });
 })(window);
