@@ -16,12 +16,12 @@
     [[GKLocalPlayer localPlayer] authenticateWithCompletionHandler:^(NSError *error) {
         if (error == nil)
         {
-            NSString* jsCallback = [NSString stringWithFormat:@"GameCenter._userDidLogin();",@""];
+            NSString* jsCallback = [NSString stringWithFormat:@"GameCenter._userDidLogin();"];
             [self.webView stringByEvaluatingJavaScriptFromString:jsCallback];
         }
         else
         {
-            NSString* jsCallback = [NSString stringWithFormat:@"GameCenter._userDidFailLogin();",@""];
+            NSString* jsCallback = [NSString stringWithFormat:@"GameCenter._userDidFailLogin();"];
             [self.webView stringByEvaluatingJavaScriptFromString:jsCallback];
         }
     }];
@@ -38,10 +38,10 @@
     [scoreReporter reportScoreWithCompletionHandler:^(NSError *error) {
         if (!error)
         {
-            NSString* jsCallback = [NSString stringWithFormat:@"GameCenter._userDidSubmitScore();",@""];
+            NSString* jsCallback = [NSString stringWithFormat:@"GameCenter._userDidSubmitScore();"];
             [self.webView stringByEvaluatingJavaScriptFromString:jsCallback];
         } else {
-            NSString* jsCallback = [NSString stringWithFormat:@"GameCenter._userDidFailSubmitScore();",@""];
+            NSString* jsCallback = [NSString stringWithFormat:@"GameCenter._userDidFailSubmitScore();"];
             [self.webView stringByEvaluatingJavaScriptFromString:jsCallback];
         }
     }];
