@@ -11,7 +11,7 @@
 
 @implementation GameCenterPlugin
 
-- (void)authenticateLocalPlayer:(CDVInvokedUrlCommand *)command
+- (void)authenticateLocalPlayer:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
     [[GKLocalPlayer localPlayer] authenticateWithCompletionHandler:^(NSError *error) {
         if (error == nil)
@@ -27,10 +27,10 @@
     }];
 }
 
-- (void)reportScore:(CDVInvokedUrlCommand *)command
+- (void)reportScore:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
-    NSString *category = (NSString*) [command.arguments objectAtIndex:0];
-    int64_t score = [[command.arguments objectAtIndex:1] integerValue];
+    NSString *category = (NSString*) [arguments objectAtIndex:0];
+    int64_t score = [[arguments objectAtIndex:1] integerValue];
 
     GKScore *scoreReporter = [[[GKScore alloc] initWithCategory:category] autorelease];
     scoreReporter.value = score;
@@ -47,19 +47,19 @@
     }];
 }
 
-- (void)showLeaderboard:(CDVInvokedUrlCommand *)command
+- (void)showLeaderboard:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
     GKLeaderboardViewController *leaderboardController = [[GKLeaderboardViewController alloc] init];
     if (leaderboardController != nil)
     {
         leaderboardController.leaderboardDelegate = self;
-        leaderboardController.category = (NSString*) [command.arguments objectAtIndex:0];
+        leaderboardController.category = (NSString*) [arguments objectAtIndex:0];
         CDVViewController* cont = (CDVViewController*)[super viewController];
         [cont presentModalViewController: leaderboardController animated: YES];
     }
 }
 
-- (void)showAchievements:(CDVInvokedUrlCommand *)command
+- (void)showAchievements:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
     GKAchievementViewController *achievements = [[GKAchievementViewController alloc] init];
     if (achievements != nil)
@@ -83,10 +83,10 @@
     [cont dismissModalViewControllerAnimated:YES];
 }
 
-- (void)reportAchievementIdentifier:(CDVInvokedUrlCommand *)command
+- (void)reportAchievementIdentifier:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
-    NSString *identifier = (NSString*) [command.arguments objectAtIndex:0];
-    float percent = [[command.arguments objectAtIndex:1] floatValue];
+    NSString *identifier = (NSString*) [arguments objectAtIndex:0];
+    float percent = [[arguments objectAtIndex:1] floatValue];
 
     GKAchievement *achievement = [[[GKAchievement alloc] initWithIdentifier: identifier] autorelease];
     if (achievement)
