@@ -21,7 +21,7 @@
         cordova.exec(null, null, "GameCenterPlugin", "showAchievements", []);
     },
 
-    getAchievement: function(category, s, f) {
+    reportAchievement: function(category, s, f) {
         cordova.exec(s, f, "GameCenterPlugin", "reportAchievementIdentifier", [category, 100]);
     },
  

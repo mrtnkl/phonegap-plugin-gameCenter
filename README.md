@@ -40,7 +40,7 @@ Using this plugin requires [Cordova iOS](https://github.com/apache/incubator-cor
 
     // Unlock achivement
     var ACHIEVEMENT_ID = 'star'
-    window.gameCenter.getAchievement(ACHIEVEMENT_ID, achievementSuccess, achievementFailure);
+    window.gameCenter.reportAchievement(ACHIEVEMENT_ID, achievementSuccess, achievementFailure);
 
     // Show achievements by modal view
     window.gameCenter.showAchievements();
