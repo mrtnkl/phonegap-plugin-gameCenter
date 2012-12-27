@@ -57,7 +57,7 @@
     if (leaderboardController != nil)
     {
         leaderboardController.leaderboardDelegate = self;
-        leaderboardController.category = (NSString*) [arguments objectAtIndex:0];
+        leaderboardController.category = (NSString*) [arguments objectAtIndex:1];
         CDVViewController* cont = (CDVViewController*)[super viewController];
         [cont presentViewController:leaderboardController animated:YES completion:^{
             [self.webView stringByEvaluatingJavaScriptFromString:@"window.gameCenter._viewDidShow()"];
