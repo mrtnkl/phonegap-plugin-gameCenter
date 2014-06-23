@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="jp.wizcorp.phonegap.plugin.gameCenterPlugin"
+    version="0.1.0">
+
+    <name>Game Center Plugin</name>
+    
+    <description>This plugin allows interaction with iOS Game Center.</description>
+    
+    <author>Ally Ogilvie - aogilvie@wizcorp.jp</author>
+    
+    <keywords>wizcorp, wizard, gamecenter, game, center</keywords>
+	
+	<engines>
+	    <engine name="cordova" version=">=3.0.0" />
+	</engines>
+
+    <license>MIT</license>
+
+    <js-module src="www/phonegap/plugin/gameCenterPlugin/gameCenterPlugin.js" name="gameCenterPlugin" target="gameCenterPlugin/gameCenterPlugin.js">
+        <clobbers target="window.gameCenter" />
+    </js-module>
+    
+    <!-- ios -->
+    <platform name="ios">
+
+        <config-file target="config.xml" parent="/*">
+		    <feature name="GameCenterPlugin">
+		        <param name="ios-package" value="GameCenterPlugin" />
+		        <param name="onload" value="true" />
+		    </feature>
+        </config-file>
+               
+        <!-- Plugin files -->
+        <header-file src="platforms/ios/HelloCordova/Plugins/GameCenterPlugin/GameCenterPlugin.h" compiler-flags="-fno-objc-arc" />
+        <source-file src="platforms/ios/HelloCordova/Plugins/GameCenterPlugin/GameCenterPlugin.m" compiler-flags="-fno-objc-arc" />
+        
+        <framework src="GameKit.framework" />
+                	
+    </platform>
+
+</plugin>

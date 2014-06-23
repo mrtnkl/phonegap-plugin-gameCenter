@@ -1,6 +1,12 @@
+# OSX hidden files
 .DS_Store
-example/ios/exampleGameCenter.xcodeproj/xcuserdata/*
-example/ios/exampleGameCenter.xcodeproj/project.xcworkspace/*
-example/ios/CordovaLib/CordovaLib.xcodeproj/xcuserdata/*
-example/ios/www/*
-!example/ios/www/cordova-2.7.0.js
+
+# Xcode files
+build/
+bin /
+
+*.pbxuser
+*.perspective
+*.perspectivev3
+
+xcuserdata
