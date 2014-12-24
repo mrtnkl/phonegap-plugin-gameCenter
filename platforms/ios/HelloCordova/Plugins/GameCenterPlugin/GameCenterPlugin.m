@@ -87,13 +87,13 @@
         scoreReporter.value = score;
 
         [scoreReporter reportScoreWithCompletionHandler:^(NSError *error) {
+            CDVPluginResult *pluginResult;
             if (!error) {
-                CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-                [self writeJavascript: [pluginResult toSuccessCallbackString:command.callbackId]];
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
             } else {
-                CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]];
-                [self writeJavascript: [pluginResult toErrorCallbackString:command.callbackId]];
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]];
             }
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
         }];
     }];
 }
@@ -129,13 +129,13 @@
 
 - (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController *)viewController {
     CDVViewController *cont = (CDVViewController *)[super viewController];
-    [cont dismissModalViewControllerAnimated:YES];
+    [cont dismissViewControllerAnimated:YES completion:nil];
     [self.webView stringByEvaluatingJavaScriptFromString:@"window.gameCenter._viewDidHide()"];
 }
 
 - (void)achievementViewControllerDidFinish:(GKAchievementViewController *)viewController {
     CDVViewController* cont = (CDVViewController *)[super viewController];
-    [cont dismissModalViewControllerAnimated:YES];
+    [cont dismissViewControllerAnimated:YES completion:nil];
     [self.webView stringByEvaluatingJavaScriptFromString:@"window.gameCenter._viewDidHide()"];
 }
 
@@ -148,17 +148,17 @@
         if (achievement) {
             achievement.percentComplete = percent;
             [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
+                CDVPluginResult *pluginResult;
                 if (!error) {
-                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-                    [self writeJavascript: [pluginResult toSuccessCallbackString:command.callbackId]];
+                    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
                 } else {
-                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]];
-                    [self writeJavascript: [pluginResult toErrorCallbackString:command.callbackId]];
+                    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]];
                 }
+                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
             }];
         } else {
             CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Failed to alloc GKAchievement"];
-            [self writeJavascript:[pluginResult toErrorCallbackString:command.callbackId]];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
         }
     }];
 }
