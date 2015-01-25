@@ -1,4 +1,3 @@
-cordova.define("jp.wizcorp.phonegap.plugin.gameCenterPlugin.gameCenterPlugin", function(require, exports, module) {
     var GameCenter = function() {
         this.onshow = null;
         this.onhide = null;
@@ -21,10 +20,18 @@ cordova.define("jp.wizcorp.phonegap.plugin.gameCenterPlugin.gameCenterPlugin", f
             cordova.exec(null, null, "GameCenterPlugin", "showAchievements", []);
         },
     
+        showAllLeaderboards: function() {
+            cordova.exec(null, null, "GameCenterPlugin", "showAllLeaderboards", []);
+        },
+
         reportAchievement: function(category, s, f) {
             cordova.exec(s, f, "GameCenterPlugin", "reportAchievementIdentifier", [category, 100]);
         },
      
+        resetAchievements: function() {
+            cordova.exec(null, null, "GameCenterPlugin", "resetAchievements", []);
+        },
+
         _viewDidShow: function() {
             if (typeof this.onshow === 'function') { this.onshow(); }
         },
@@ -37,4 +44,3 @@ cordova.define("jp.wizcorp.phonegap.plugin.gameCenterPlugin.gameCenterPlugin", f
     
     var gameCenter = new GameCenter();
     module.exports = gameCenter;
-});

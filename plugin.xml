@@ -18,7 +18,7 @@
 
     <license>MIT</license>
 
-    <js-module src="www/phonegap/plugin/gameCenterPlugin/gameCenterPlugin.js" name="gameCenterPlugin" target="gameCenterPlugin/gameCenterPlugin.js">
+    <js-module src="gameCenterPlugin.js">
         <clobbers target="window.gameCenter" />
     </js-module>
     
@@ -33,8 +33,8 @@
         </config-file>
                
         <!-- Plugin files -->
-        <header-file src="platforms/ios/HelloCordova/Plugins/GameCenterPlugin/GameCenterPlugin.h" compiler-flags="-fno-objc-arc" />
-        <source-file src="platforms/ios/HelloCordova/Plugins/GameCenterPlugin/GameCenterPlugin.m" compiler-flags="-fno-objc-arc" />
+        <header-file src="GameCenterPlugin.h" compiler-flags="-fno-objc-arc" />
+        <source-file src="GameCenterPlugin.m" compiler-flags="-fno-objc-arc" />
         
         <framework src="GameKit.framework" />
                 	

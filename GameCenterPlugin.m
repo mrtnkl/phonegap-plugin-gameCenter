@@ -19,6 +19,7 @@
 
 @interface GameCenterPlugin ()
 @property (nonatomic, retain) GKLeaderboardViewController *leaderboardController;
+@property (nonatomic, retain) GKGameCenterViewController *allLeaderboardsController;
 @property (nonatomic, retain) GKAchievementViewController *achievementsController;
 @end
 
@@ -27,6 +28,7 @@
 - (void)dealloc {
     self.leaderboardController = nil;
     self.achievementsController = nil;
+    self.allLeaderboardsController = nil;
     
     [super dealloc];
 }
@@ -48,7 +50,7 @@
         } else {
             [[GKLocalPlayer localPlayer] setAuthenticateHandler:^(UIViewController *viewcontroller, NSError *error) {
                 CDVPluginResult *pluginResult;
-            
+                
                 if ([GKLocalPlayer localPlayer].authenticated) {
                     // Already authenticated
                     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -69,9 +71,9 @@
                         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]];
                     }
                     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-
+                    
                 }
-
+                
             }];
         }
     }];
@@ -82,10 +84,10 @@
     [self.commandDelegate runInBackground:^{
         NSString *category = (NSString *) [command.arguments objectAtIndex:0];
         int64_t score = [[command.arguments objectAtIndex:1] integerValue];
-
+        
         GKScore *scoreReporter = [[[GKScore alloc] initWithCategory:category] autorelease];
         scoreReporter.value = score;
-
+        
         [scoreReporter reportScoreWithCompletionHandler:^(NSError *error) {
             CDVPluginResult *pluginResult;
             if (!error) {
@@ -104,10 +106,25 @@
             self.leaderboardController = [[GKLeaderboardViewController alloc] init];
             self.leaderboardController.leaderboardDelegate = self;
         }
-
+        
         self.leaderboardController.category = (NSString *) [command.arguments objectAtIndex:0];
         CDVViewController *cont = (CDVViewController *)[super viewController];
         [cont presentViewController:self.leaderboardController animated:YES completion:^{
+            [self.webView stringByEvaluatingJavaScriptFromString:@"window.gameCenter._viewDidShow()"];
+        }];
+    }];
+}
+
+- (void)showAllLeaderboards:(CDVInvokedUrlCommand *)command {
+    [self.commandDelegate runInBackground:^{
+        if ( self.allLeaderboardsController == nil ) {
+            self.allLeaderboardsController = [[GKGameCenterViewController alloc] init];
+            self.allLeaderboardsController.viewState = GKGameCenterViewControllerStateLeaderboards;
+            self.allLeaderboardsController.gameCenterDelegate = self;
+        }
+        
+        CDVViewController *cont = (CDVViewController *)[super viewController];
+        [cont presentViewController:self.allLeaderboardsController animated:YES completion:^{
             [self.webView stringByEvaluatingJavaScriptFromString:@"window.gameCenter._viewDidShow()"];
         }];
     }];
@@ -119,7 +136,7 @@
             self.achievementsController = [[GKAchievementViewController alloc] init];
             self.achievementsController.achievementDelegate = self;
         }
-
+        
         CDVViewController *cont = (CDVViewController *)[super viewController];
         [cont presentViewController:self.achievementsController animated:YES completion:^{
             [self.webView stringByEvaluatingJavaScriptFromString:@"window.gameCenter._viewDidShow()"];
@@ -139,13 +156,21 @@
     [self.webView stringByEvaluatingJavaScriptFromString:@"window.gameCenter._viewDidHide()"];
 }
 
+- (void)gameCenterViewControllerDidFinish:(GKGameCenterViewController *)viewController
+{
+    CDVViewController *cont = (CDVViewController *)[super viewController];
+    [cont dismissViewControllerAnimated:YES completion:nil];
+    [self.webView stringByEvaluatingJavaScriptFromString:@"window.gameCenter._viewDidHide()"];
+}
+
 - (void)reportAchievementIdentifier:(CDVInvokedUrlCommand *)command {
     [self.commandDelegate runInBackground:^{
         NSString *identifier = (NSString *) [command.arguments objectAtIndex:0];
         float percent = [[command.arguments objectAtIndex:1] floatValue];
-
+        
         GKAchievement *achievement = [[[GKAchievement alloc] initWithIdentifier: identifier] autorelease];
         if (achievement) {
+            achievement.showsCompletionBanner = YES;
             achievement.percentComplete = percent;
             [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
                 CDVPluginResult *pluginResult;
@@ -163,4 +188,23 @@
     }];
 }
 
+- (void) resetAchievements:(CDVInvokedUrlCommand*)command;
+{
+    __block CDVPluginResult* pluginResult = nil;
+    
+    // Clear all progress saved on Game Center.
+    [GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error)
+     {
+         if (error != nil)
+         {
+             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]];
+         } else {
+             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+         }
+         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+         
+     }
+     ];
+    
+}
 @end
